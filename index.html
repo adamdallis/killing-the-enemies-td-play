@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Killing the Enemies TD – Playtest</title>
+<meta name="description" content="Online multiplayer tower defense / auto-battler. Build a maze, send an army, be the last base standing. Free playtest for Windows and Mac.">
+<meta property="og:title" content="Killing the Enemies TD – Playtest">
+<meta property="og:description" content="Build a maze, send an army, be the last base standing. 2–8 players, Windows + Mac.">
+<meta property="og:image" content="img/battle.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080f; --panel:#0d1220; --line:#1f2a44; --text:#e6ecf7; --muted:#8e9ab3;
+  --cyan:#4fe3ff; --gold:#ffcc4d; --red:#ff4d6d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--cyan)}
+h1,h2,h3{font-family:"Chakra Petch",Inter,sans-serif;letter-spacing:.02em;line-height:1.15;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.75}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,15,.2) 0%,rgba(6,8,15,.35) 50%,var(--bg) 100%)}
+.hero .wrap{position:relative;z-index:1;padding-bottom:64px;width:100%}
+.tag{display:inline-block;font:600 12px/1 Inter;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(255,204,77,.5);padding:7px 10px;border-radius:4px;margin-bottom:18px;background:rgba(6,8,15,.5)}
+.hero h1{font-size:clamp(40px,8vw,88px);text-shadow:0 0 40px rgba(79,227,255,.35)}
+.hero p.lead{font-size:clamp(17px,2.2vw,21px);max-width:620px;color:#cfd8ea;margin:16px 0 30px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:8px;font:600 16px Inter;text-decoration:none;border:1px solid var(--line);color:var(--text);background:rgba(13,18,32,.85);transition:transform .12s,border-color .12s}
+.btn:hover{transform:translateY(-1px);border-color:var(--cyan)}
+.btn.primary{background:var(--cyan);color:#041018;border-color:var(--cyan)}
+.btn small{font-weight:500;opacity:.7}
+.btn svg{width:20px;height:20px;flex:none}
+
+section{padding:72px 0}
+section h2{font-size:clamp(28px,4vw,40px);margin-bottom:24px}
+
+/* pitch */
+.pitch{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+.card h3{font-size:20px;margin-bottom:8px;color:var(--cyan)}
+.card p{margin:0;color:var(--muted)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.gallery img{width:100%;height:100%;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block}
+.gallery .side{display:grid;gap:12px}
+@media (max-width:760px){.gallery{grid-template-columns:1fr}}
+
+/* install */
+.install{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.install .card.hl{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
+.install ol{margin:12px 0 0;padding-left:20px;color:#cfd8ea}
+.install li{margin-bottom:8px}
+code{font:14px/1.4 ui-monospace,Consolas,monospace;background:#0a0f1b;border:1px solid var(--line);border-radius:5px;padding:2px 6px;word-break:break-all}
+.note{color:var(--muted);font-size:14px;margin-top:12px}
+
+.steps{counter-reset:s;display:grid;gap:12px}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.step::before{counter-increment:s;content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--gold);color:#1a1200;font:700 16px/32px "Chakra Petch";text-align:center}
+.step p{margin:0;color:#cfd8ea}
+
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="img/battle.jpg" alt="A battle in progress: units march along a glowing lane past towers toward a shielded command core">
+  <div class="wrap">
+    <span class="tag">Free playtest · Windows &amp; Mac</span>
+    <h1>Killing the Enemies TD</h1>
+    <p class="lead">Online tower defense meets auto-battler. Build a maze on your deck, send your army through everyone else's, and be the last base standing. 2–8 players, or practice against bots.</p>
+    <div class="btns">
+      <a class="btn" id="dl-win" href="https://github.com/adamdallis/killing-the-enemies-td-play/releases/latest/download/KillingTheEnemiesTD-Windows.zip">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.5v7H3zm8.5-1.1L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zm8.5 0H21V21l-9.5-1.4z"/></svg>
+        Download for Windows <small>88 MB</small></a>
+      <a class="btn" id="dl-mac" href="https://github.com/adamdallis/killing-the-enemies-td-play/releases/latest/download/KillingTheEnemiesTD-Mac.zip">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.5 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.8-1.1-2.8-4.3zM14 5.1c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+        Download for Mac <small>159 MB</small></a>
+      <a class="btn" href="#install">How to install</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <h2>How it plays</h2>
+    <div class="pitch">
+      <div class="card"><h3>Shop</h3><p>Every round you get a private board of towers and units. Buy what fits your plan, reroll what doesn't.</p></div>
+      <div class="card"><h3>Merge</h3><p>Three copies of the same tower or unit fuse into a stronger one. Collect, combine, climb.</p></div>
+      <div class="card"><h3>Maze</h3><p>Towers block the path. Wall your deck into a maze so enemy armies walk the long way past your guns.</p></div>
+      <div class="card"><h3>Attack</h3><p>Your army marches through every other player's maze. Whatever survives hits their core.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="gallery">
+      <img src="img/ring_battle.jpg" alt="The full ring of player decks around the central Nexus spire during a battle" loading="lazy">
+      <div class="side">
+        <img src="img/ring.jpg" alt="Four player decks floating around the Nexus spire" loading="lazy">
+        <img src="img/deck.jpg" alt="Close-up of a player's deck with towers beside the lane" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install</h2>
+    <div class="install">
+      <div class="card" id="card-win">
+        <h3>Windows</h3>
+        <ol>
+          <li><a href="https://github.com/adamdallis/killing-the-enemies-td-play/releases/latest/download/KillingTheEnemiesTD-Windows.zip">Download the zip</a>.</li>
+          <li>Right-click it → <b>Extract All</b>.</li>
+          <li>Run <code>KillingTheEnemiesTD.exe</code>.</li>
+          <li>If a blue “Windows protected your PC” box appears: <b>More info → Run anyway</b>.</li>
+        </ol>
+        <p class="note">Found a bug? Run <code>KillingTheEnemiesTD.console.exe</code> instead and screenshot the log window.</p>
+      </div>
+      <div class="card" id="card-mac">
+        <h3>Mac</h3>
+        <ol>
+          <li><a href="https://github.com/adamdallis/killing-the-enemies-td-play/releases/latest/download/KillingTheEnemiesTD-Mac.zip">Download the zip</a> and double-click it.</li>
+          <li><b>Right-click the app → Open → Open</b> (first time only).</li>
+          <li>If macOS says the app is “damaged”, open Terminal in that folder and run:<br>
+            <code>xattr -dr com.apple.quarantine "Killing the enemiesTD.app"</code></li>
+        </ol>
+        <p class="note">Works on Apple Silicon and Intel Macs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Play with friends</h2>
+    <div class="steps">
+      <div class="step"><p>Everyone opens <b>Steam</b> and logs in. You don't need to own anything – the game just uses Steam to connect you.</p></div>
+      <div class="step"><p>One player clicks <b>Play online → Host (Steam)</b>.</p></div>
+      <div class="step"><p>Everyone else clicks <b>Play online</b> and joins the game from the list. Windows and Mac players can play together.</p></div>
+      <div class="step"><p>Just want to try it? Pick <b>Practice vs bots</b> from the main menu.</p></div>
+    </div>
+    <p class="note">Playtest build: a player who disconnects is out of the match, and if the host quits the match ends for everyone.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Killing the Enemies TD · playtest build · <a href="https://github.com/adamdallis/killing-the-enemies-td-play/releases">all releases</a></div>
+</footer>
+
+<script>
+// Highlight the visitor's platform.
+(function(){
+  var ua = navigator.userAgent || "";
+  var mac = /Mac/i.test(navigator.platform || ua) && !/iPhone|iPad/i.test(ua);
+  var win = /Win/i.test(navigator.platform || ua);
+  var id = mac ? "mac" : win ? "win" : null;
+  if (!id) return;
+  document.getElementById("dl-" + id).classList.add("primary");
+  document.getElementById("card-" + id).classList.add("hl");
+})();
+</script>
+</body>
+</html>
